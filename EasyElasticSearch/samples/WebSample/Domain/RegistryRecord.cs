@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EasyElasticSearch.Entity;
+using System;
 
 namespace WebSample.Domain
 {
-    public class RegistryRecord
+    public class RegistryRecord : EsBaseEntity
     {
         public string UserId { get; set; }
 
