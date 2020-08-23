@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EasyElasticSearch
 {
-    public class ElasticsearchProvider : IIndexProvider
+    public class ElasticsearchProvider : IIndexProvider, ISearchProvider
     {
         public IElasticClient _elasticClient;
 
@@ -66,5 +66,16 @@ namespace EasyElasticSearch
         }
 
         #endregion
+
+        public ISearchResponse<T> SearchPage<T>(ElasticsearchPage<T> page) where T : class, new()
+        {
+            var rquest = page.InitSearchRequest();
+            rquest.Query = ExpressionsGetQuery.GetQuery<T>(page.Query);
+            var response = _elasticClient.Search<T>(rquest);
+
+            if (!response.IsValid)
+                throw new Exception($"查询失败:{response.OriginalException.Message}");
+            return response;
+        }
     }
 }

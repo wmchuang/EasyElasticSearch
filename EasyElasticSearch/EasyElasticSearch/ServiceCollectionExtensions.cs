@@ -15,6 +15,7 @@ namespace EasyElasticSearch
 
             services.AddTransient<IEsClientProvider, EsClientProvider>();
             services.AddTransient<IIndexProvider, ElasticsearchProvider>();
+            services.AddTransient<ISearchProvider, ElasticsearchProvider>();
         }
     }
 }
