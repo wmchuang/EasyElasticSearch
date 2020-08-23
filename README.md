@@ -4,25 +4,42 @@
 
 Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析引擎。它能很方便的使大量数据具有搜索、分析和探索的能力,简称ES
 
-## EasyElasticSearch支持ES的增删改查的一个基础类库
+#### EasyElasticSearch是支持ES的增删改查的一个基础类库
+##### 支持表达式函数查询
+##### 别名操作
 
-### 增加
+## 查询
 ```csharp
-	/// <summary>
-        /// 新增
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
+ [HttpGet]
+        public IActionResult Page()
+        {
+            var page = new ElasticsearchPage<RegistryRecord>()
+            {
+                PageIndex = 1,
+                PageSize = 100,
+                Query = x => x.UserName == "es"
+            };
+
+            var data = _searchProvider.SearchPage<RegistryRecord>(page);
+            data.Hits.ToList().ForEach(x => Console.WriteLine(x.Id));
+            return new JsonResult(data.Documents);
+        }
+```
+
+
+## 增加
+```csharp
+ [HttpGet]
         public ActionResult Add()
         {
-            var log = new RegistryRecord
+            var record = new RegistryRecord
             {
                 UserId = "1268436794379079680",
                 UserName = "es",
                 RegistryTime = DateTime.Now
             };
 
-            _indexProvider.Index<RegistryRecord>(log);
+            _indexProvider.Index<RegistryRecord>(record);
             return Ok("Success");
         }
 
@@ -33,7 +50,7 @@ Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析
         [HttpGet]
         public ActionResult BulkAdd()
         {
-            var logs = new List<RegistryRecord>
+            var records = new List<RegistryRecord>
             {
                 new RegistryRecord{
                       UserId = "1268436794379079680",
@@ -47,7 +64,18 @@ Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析
                 },
             };
 
-            _indexProvider.BulkIndex<RegistryRecord>(logs);
+            _indexProvider.BulkIndex<RegistryRecord>(records);
             return Ok("Success");
         }
 ```
+## 删除
+```csharp
+[HttpGet]
+        public IActionResult Delete()
+        {
+            _deleteProvider.DeleteByQuery<RegistryRecord>(x => x.UserName == "Bulkes1");
+            return Ok("Success");
+        }
+```
+##.....
+
