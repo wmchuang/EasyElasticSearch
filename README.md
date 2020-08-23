@@ -6,7 +6,7 @@ Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析
 
 ## EasyElasticSearch支持ES的增删改查的一个基础类库
 
-### 增加:tw-1f357: :tw-1f357:
+### 增加
 ```csharp
 	/// <summary>
         /// 新增
