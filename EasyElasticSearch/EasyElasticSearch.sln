@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyElasticSearch", "EasyElasticSearch\EasyElasticSearch.csproj", "{183926CD-7D22-4C90-8C31-BAF1E850BA9C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{9A854567-4E05-4954-8EEC-DA5EEE53FDDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSample", "samples\WebSample\WebSample.csproj", "{DDCF1F47-2290-41C3-8D06-33B96DF27999}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{183926CD-7D22-4C90-8C31-BAF1E850BA9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{183926CD-7D22-4C90-8C31-BAF1E850BA9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{183926CD-7D22-4C90-8C31-BAF1E850BA9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDCF1F47-2290-41C3-8D06-33B96DF27999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDCF1F47-2290-41C3-8D06-33B96DF27999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDCF1F47-2290-41C3-8D06-33B96DF27999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDCF1F47-2290-41C3-8D06-33B96DF27999}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DDCF1F47-2290-41C3-8D06-33B96DF27999} = {9A854567-4E05-4954-8EEC-DA5EEE53FDDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4D3620F-9C2B-489E-A9F3-FD6E46704085}
