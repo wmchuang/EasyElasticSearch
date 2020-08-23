@@ -11,71 +11,71 @@ Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析
 ## 查询
 ```csharp
  [HttpGet]
-        public IActionResult Page()
-        {
-            var page = new ElasticsearchPage<RegistryRecord>()
-            {
-                PageIndex = 1,
-                PageSize = 100,
-                Query = x => x.UserName == "es"
-            };
+ public IActionResult Page()
+ {
+     var page = new ElasticsearchPage<RegistryRecord>()
+     {
+         PageIndex = 1,
+         PageSize = 100,
+         Query = x => x.UserName == "es"
+     };
 
-            var data = _searchProvider.SearchPage<RegistryRecord>(page);
-            data.Hits.ToList().ForEach(x => Console.WriteLine(x.Id));
-            return new JsonResult(data.Documents);
-        }
+     var data = _searchProvider.SearchPage<RegistryRecord>(page);
+     data.Hits.ToList().ForEach(x => Console.WriteLine(x.Id));
+     return new JsonResult(data.Documents);
+ }
 ```
 
 
 ## 增加
 ```csharp
  [HttpGet]
-        public ActionResult Add()
-        {
-            var record = new RegistryRecord
-            {
-                UserId = "1268436794379079680",
-                UserName = "es",
-                RegistryTime = DateTime.Now
-            };
+ public ActionResult Add()
+ {
+     var record = new RegistryRecord
+     {
+         UserId = "1268436794379079680",
+         UserName = "es",
+         RegistryTime = DateTime.Now
+     };
 
-            _indexProvider.Index<RegistryRecord>(record);
-            return Ok("Success");
-        }
+     _indexProvider.Index<RegistryRecord>(record);
+     return Ok("Success");
+ }
 
-        /// <summary>
-        /// 批量新增
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult BulkAdd()
-        {
-            var records = new List<RegistryRecord>
-            {
-                new RegistryRecord{
-                      UserId = "1268436794379079680",
-                      UserName = "Bulkes1",
-                     RegistryTime = DateTime.Now
-                },
-                new RegistryRecord{
-                      UserId = "1268436794379079680",
-                      UserName = "Bulkes2",
-                     RegistryTime = DateTime.Now
-                },
-            };
+ /// <summary>
+ /// 批量新增
+ /// </summary>
+ /// <returns></returns>
+ [HttpGet]
+ public ActionResult BulkAdd()
+ {
+     var records = new List<RegistryRecord>
+     {
+         new RegistryRecord{
+               UserId = "1268436794379079680",
+               UserName = "Bulkes1",
+              RegistryTime = DateTime.Now
+         },
+         new RegistryRecord{
+               UserId = "1268436794379079680",
+               UserName = "Bulkes2",
+              RegistryTime = DateTime.Now
+         },
+     };
 
-            _indexProvider.BulkIndex<RegistryRecord>(records);
-            return Ok("Success");
-        }
+     _indexProvider.BulkIndex<RegistryRecord>(records);
+     return Ok("Success");
+ }
 ```
 ## 删除
 ```csharp
 [HttpGet]
-        public IActionResult Delete()
-        {
-            _deleteProvider.DeleteByQuery<RegistryRecord>(x => x.UserName == "Bulkes1");
-            return Ok("Success");
-        }
+public IActionResult Delete()
+{
+    _deleteProvider.DeleteByQuery<RegistryRecord>(x => x.UserName == "Bulkes1");
+    return Ok("Success");
+}
 ```
 ##.....
 
