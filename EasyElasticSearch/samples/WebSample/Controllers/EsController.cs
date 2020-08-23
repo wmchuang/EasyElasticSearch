@@ -60,10 +60,6 @@ namespace WebSample.Controllers
 
         #region 增
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult Add()
         {

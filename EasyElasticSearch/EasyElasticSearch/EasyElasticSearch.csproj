@@ -1,7 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageProjectUrl>https://github.com/wmchuang/EasyElasticSearch</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/wmchuang/EasyElasticSearch</RepositoryUrl>
+    <PackageTags>ElasticSearch</PackageTags>
+    <Authors>Chuang</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
