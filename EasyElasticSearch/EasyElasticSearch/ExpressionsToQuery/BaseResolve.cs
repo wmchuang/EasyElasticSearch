@@ -13,7 +13,6 @@ namespace EasyElasticSearch
         public ExpressionContext Context { get; set; }
         public bool? IsLeft { get; set; }
 
-        //public int ContentIndex { get { return this.Context.Index; } }
         public int Index { get; set; }
 
         public ExpressionParameter BaseParameter { get; set; }
@@ -59,10 +58,10 @@ namespace EasyElasticSearch
             //{
             //    return new ConditionalExpressionResolve(parameter);
             //}
-            //else if (expression is MethodCallExpression)
-            //{
-            //    return new MethodCallExpressionResolve(parameter);
-            //}
+            else if (expression is MethodCallExpression)
+            {
+                return new MethodCallExpressionResolve(parameter);
+            }
             //else if (expression is MemberExpression && ((MemberExpression)expression).Expression == null)
             //{
             //    return new MemberNoExpressionResolve(parameter);

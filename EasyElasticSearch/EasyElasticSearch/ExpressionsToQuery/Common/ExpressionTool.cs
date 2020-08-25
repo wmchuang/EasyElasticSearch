@@ -42,13 +42,12 @@ namespace EasyElasticSearch
                     };
                 case ExpressionType.NotEqual:
                     return new BoolQuery();
-                case ExpressionType.Modulo:
-                    return new MatchPhraseQuery();
+       
                 default:
                     return null;
             }
         }
-
+         
         public static object GetValue(object value)
         {
             if (value == null) return value;

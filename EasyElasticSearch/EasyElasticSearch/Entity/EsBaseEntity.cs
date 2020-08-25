@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyElasticSearch.Entity
+﻿namespace EasyElasticSearch.Entity
 {
     public class EsBaseEntity
     {

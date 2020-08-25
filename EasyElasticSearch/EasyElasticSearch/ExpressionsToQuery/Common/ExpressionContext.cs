@@ -45,6 +45,11 @@ namespace EasyElasticSearch
                     matchPhraseQuery.Field = Fileds.ElementAt(i);
                     matchPhraseQuery.Query = ValueList.ElementAt(i).ToString();
                 }
+                else if (temp is QueryStringQuery queryStringQuery)
+                {
+                    queryStringQuery.Fields = new[] { Fileds.ElementAt(i) };
+                    queryStringQuery.Query = "*" + ValueList.ElementAt(i).ToString() + "*";
+                }
 
                 if (i == 0)
                 {

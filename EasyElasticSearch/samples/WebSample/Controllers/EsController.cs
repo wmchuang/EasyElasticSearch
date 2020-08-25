@@ -44,11 +44,12 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult Page()
         {
+            var list = new List<string> { "Bulkes2", "es" };
             var page = new ElasticsearchPage<RegistryRecord>()
             {
                 PageIndex = 1,
                 PageSize = 100,
-                Query = x => x.UserName == "es"
+                Query = x => x.UserName.Contains("Bulkes")
             };
 
             var data = _searchProvider.SearchPage<RegistryRecord>(page);
