@@ -19,7 +19,7 @@ namespace EasyElasticSearch
             Index = index.GetIndex<T>();
         }
 
-        public SearchRequest InitSearchRequest()
+        public ISearchRequest InitSearchRequest()
         {
             return new SearchRequest(Index)
             {

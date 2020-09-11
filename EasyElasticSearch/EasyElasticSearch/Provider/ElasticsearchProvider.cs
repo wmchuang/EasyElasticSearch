@@ -81,6 +81,15 @@ namespace EasyElasticSearch
             return response;
         }
 
+        public ISearchRequest Queryable<T>(string index = "") where T : class, new()
+        {
+            return new SearchRequest(index.GetIndex<T>());
+        }
+
+
+
+
+
         #endregion
 
         #region Delete
@@ -150,6 +159,11 @@ namespace EasyElasticSearch
         public BulkAliasResponse RemoveAlias<T>(string alias) where T : class
         {
             return RemoveAlias(string.Empty.GetIndex<T>(), alias);
+        }
+
+        public ISearchRequest<T> OrderBy<T>(Expression<Func<T, object>> expression, OrderByType type = OrderByType.Asc) where T : class
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

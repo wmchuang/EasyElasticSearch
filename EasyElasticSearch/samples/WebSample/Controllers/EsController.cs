@@ -21,13 +21,15 @@ namespace WebSample.Controllers
         private readonly IAliasProvider _aliasProvider;
 
         private readonly ILogger<EsController> _logger;
+        private readonly IEasyEsContext _easyEsContext;
 
         public EsController(ILogger<EsController> logger,
             IIndexProvider indexProvider,
             ISearchProvider searchProvider,
             IDeleteProvider deleteProvider,
             IUpdateProvider updateProvider,
-            IAliasProvider aliasProvider)
+            IAliasProvider aliasProvider,
+            IEasyEsContext easyEsContext)
         {
             _logger = logger;
             _indexProvider = indexProvider;
@@ -35,6 +37,7 @@ namespace WebSample.Controllers
             _deleteProvider = deleteProvider;
             _updateProvider = updateProvider;
             _aliasProvider = aliasProvider;
+            _easyEsContext = easyEsContext;
         }
 
         #endregion
@@ -44,6 +47,8 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult Page()
         {
+            var m = _easyEsContext.Query<RegistryRecord>().Where(x => x.UserName == "es").ToList();
+            // _searchProvider.Queryable<RegistryRecord>().Where<RegistryRecord>(x => x.UserName == "1").OrderBy();
             var list = new List<string> { "Bulkes2", "es" };
             var page = new ElasticsearchPage<RegistryRecord>()
             {

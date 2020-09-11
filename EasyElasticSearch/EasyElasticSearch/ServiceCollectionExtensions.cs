@@ -19,6 +19,9 @@ namespace EasyElasticSearch
             services.AddTransient<IDeleteProvider, ElasticsearchProvider>();
             services.AddTransient<IUpdateProvider, ElasticsearchProvider>();
             services.AddTransient<IAliasProvider, ElasticsearchProvider>();
+            services.AddTransient<IEasyEsContext, EasyEsContext>();
+            //services.Add(new ServiceDescriptor(typeof(IEasyEsContext<>), typeof(EasyEsContext<>), ServiceLifetime.Scoped));//泛型注入
+            //services.AddSingleton(typeof(IEasyEsContext<>), typeof(EasyEsContext<>));
         }
     }
 }
