@@ -6,6 +6,9 @@ namespace EasyElasticSearch
 {
     public class ElasticsearchPage<T> where T : class, new()
     {
+        /// <summary>
+        /// 哈哈哈
+        /// </summary>
         public string Index { get; set; }
 
         public int PageSize { get; set; } = 0;

@@ -42,7 +42,7 @@ namespace EasyElasticSearch
             catch (Exception ex)
             {
                 logger.LogError(ex, "ElasticSearch Initialized failed.");
-                throw ex;
+                throw;
             }
         }
     }

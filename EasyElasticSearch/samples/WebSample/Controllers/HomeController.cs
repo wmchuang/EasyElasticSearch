@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using EasyElasticSearch;
 using Microsoft.AspNetCore.Mvc;
+using Nest;
 using WebSample.Domain;
 
 namespace WebSample.Controllers
 {
-    [ApiController]
-    [Route("[controller]/[action]")]
-    public class HomeController : ControllerBase
+    public class HomeController : BaseController
     {
         private readonly IEsClientProvider _esClientProvider;
 
@@ -21,11 +17,14 @@ namespace WebSample.Controllers
 
         public IActionResult Index()
         {
-            var s = _esClientProvider.Client.Search<RegistryRecord>(s => s
-                            .Index("registryrecord")
-                            .From(0)
-                            .Size(10)
-                            .Query(q => q.Match(t => t.Field(x => x.UserName).Query("es"))));
+            Func<SearchDescriptor<RegistryRecord>, ISearchRequest> request = searchDescriptor => searchDescriptor
+                             .Index("registryrecord")
+                             .From(0)
+                             .Size(10)
+                             .Query(q => q.Match(t => t.Field(x => x.UserName).Query("es")));
+
+
+            var s = _esClientProvider.Client.Search(request);
 
             return new JsonResult(s);
         }

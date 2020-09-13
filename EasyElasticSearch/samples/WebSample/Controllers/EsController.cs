@@ -4,13 +4,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WebSample.Domain;
 
 namespace WebSample.Controllers
 {
-    [ApiController]
-    [Route("[controller]/[action]")]
-    public class EsController : ControllerBase
+    public class EsController : BaseController
     {
         #region Ctor
 
@@ -67,7 +66,7 @@ namespace WebSample.Controllers
         #region 增
 
         [HttpGet]
-        public ActionResult Add()
+        public async Task<ActionResult> Add()
         {
             var record = new RegistryRecord
             {
@@ -76,7 +75,7 @@ namespace WebSample.Controllers
                 RegistryTime = DateTime.Now
             };
 
-            _indexProvider.Index<RegistryRecord>(record);
+            await _indexProvider.AddAsync(record);
             return Ok("Success");
         }
 
@@ -96,12 +95,12 @@ namespace WebSample.Controllers
                 },
                 new RegistryRecord{
                       UserId = "1268436794379079680",
-                      UserName = "Bulkes2",
+                      UserName = "Bulges2",
                      RegistryTime = DateTime.Now
                 },
             };
 
-            _indexProvider.BulkIndex<RegistryRecord>(records);
+            _indexProvider.AddManyAsync(records);
             return Ok("Success");
         }
 

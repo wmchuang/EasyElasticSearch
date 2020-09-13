@@ -3,63 +3,67 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EasyElasticSearch
 {
-    public class ElasticsearchProvider : IIndexProvider, ISearchProvider, IDeleteProvider, IUpdateProvider, IAliasProvider
+    public class ElasticSearchProvider : IIndexProvider, ISearchProvider, IDeleteProvider, IUpdateProvider, IAliasProvider
     {
-        public IElasticClient _elasticClient;
+        private readonly IElasticClient _elasticClient;
 
-        public ElasticsearchProvider(IEsClientProvider esClientProvider)
+        public ElasticSearchProvider(IEsClientProvider esClientProvider)
         {
             _elasticClient = esClientProvider.Client;
         }
 
         #region Index
 
-        public bool IndexExists(string index)
+        public async Task<bool> IndexExistsAsync(string index)
         {
-            var res = _elasticClient.Indices.Exists(index);
+            var res = await _elasticClient.Indices.ExistsAsync(index);
             return res.Exists;
         }
 
-        public void Index<T>(T entity, string index = "") where T : class
+        public async Task AddAsync<T>(T entity, string index = "") where T : class
         {
             var indexName = index.GetIndex<T>();
-            if (!IndexExists(indexName))
+            var exists = await IndexExistsAsync(indexName);
+            if (!exists)
             {
-                ((ElasticClient)_elasticClient).CreateIndex<T>(indexName);
+                await ((ElasticClient)_elasticClient).CreateIndexAsync<T>(indexName);
             }
-            var response = _elasticClient.Index(entity,
+            var response = await _elasticClient.IndexAsync(entity,
                 s => s.Index(indexName));
 
             if (!response.IsValid)
                 throw new Exception("新增数据失败:" + response.OriginalException.Message);
         }
 
-        public void BulkIndex<T>(List<T> entity, string index) where T : class
+        public async Task AddManyAsync<T>(IEnumerable<T> entity, string index) where T : class
         {
             var indexName = index.GetIndex<T>();
-            if (!IndexExists(indexName))
+            var exists = await IndexExistsAsync(indexName);
+            if (!exists)
             {
-                ((ElasticClient)_elasticClient).CreateIndex<T>(indexName);
+                await ((ElasticClient)_elasticClient).CreateIndexAsync<T>(indexName);
             }
 
             var bulkRequest = new BulkRequest(indexName)
             {
                 Operations = new List<IBulkOperation>()
             };
-            var idxops = entity.Select(o => new BulkIndexOperation<T>(o)).Cast<IBulkOperation>().ToList();
-            bulkRequest.Operations = idxops;
-            var response = _elasticClient.Bulk(bulkRequest);
+            var operations = entity.Select(o => new BulkIndexOperation<T>(o)).Cast<IBulkOperation>().ToList();
+            bulkRequest.Operations = operations;
+            var response = await _elasticClient.BulkAsync(bulkRequest);
 
             if (!response.IsValid)
-                throw new Exception("新增数据失败:" + response.OriginalException.Message);
+                throw new Exception("批量新增数据失败:" + response.OriginalException.Message);
         }
 
-        public void RemoveIndex(string index)
+        public async Task RemoveIndex(string index)
         {
-            if (!IndexExists(index)) return;
+            var exists = await IndexExistsAsync(index);
+            if (!exists) return;
             var response = _elasticClient.Indices.Delete(index);
 
             if (!response.IsValid)

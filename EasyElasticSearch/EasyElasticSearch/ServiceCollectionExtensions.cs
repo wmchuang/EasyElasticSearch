@@ -14,14 +14,11 @@ namespace EasyElasticSearch
             services.Configure(setupAction);
 
             services.AddTransient<IEsClientProvider, EsClientProvider>();
-            services.AddTransient<IIndexProvider, ElasticsearchProvider>();
-            services.AddTransient<ISearchProvider, ElasticsearchProvider>();
-            services.AddTransient<IDeleteProvider, ElasticsearchProvider>();
-            services.AddTransient<IUpdateProvider, ElasticsearchProvider>();
-            services.AddTransient<IAliasProvider, ElasticsearchProvider>();
-            services.AddTransient<IEasyEsContext, EasyEsContext>();
-            //services.Add(new ServiceDescriptor(typeof(IEasyEsContext<>), typeof(EasyEsContext<>), ServiceLifetime.Scoped));//泛型注入
-            //services.AddSingleton(typeof(IEasyEsContext<>), typeof(EasyEsContext<>));
+            services.AddTransient<IIndexProvider, ElasticSearchProvider>();
+            services.AddTransient<ISearchProvider, ElasticSearchProvider>();
+            services.AddTransient<IDeleteProvider, ElasticSearchProvider>();
+            services.AddTransient<IUpdateProvider, ElasticSearchProvider>();
+            services.AddTransient<IAliasProvider, ElasticSearchProvider>();
         }
     }
 }

@@ -9,6 +9,6 @@ namespace WebSample.Domain
 
         public string UserName { get; set; }
 
-        public DateTime RegistryTime { get; set; }
-    }
+        public DateTime RegistryTime { get; set; } = DateTime.Now;
+    } 
 }

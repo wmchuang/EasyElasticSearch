@@ -2,12 +2,9 @@
 
 namespace WebSample.Controllers
 {
-    public class BaseController : Controller
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public abstract class BaseController : ControllerBase
     {
-        // GET
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

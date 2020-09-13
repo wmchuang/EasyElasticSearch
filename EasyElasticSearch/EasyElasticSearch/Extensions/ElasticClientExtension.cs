@@ -1,11 +1,12 @@
 ﻿using Nest;
 using System;
+using System.Threading.Tasks;
 
 namespace EasyElasticSearch
 {
     public static class ElasticClientExtension
     {
-        public static bool CreateIndex<T>(this ElasticClient elasticClient, string indexName = "", int numberOfShards = 5, int numberOfReplicas = 1) where T : class
+        public static async Task<bool> CreateIndexAsync<T>(this ElasticClient elasticClient, string indexName = "", int numberOfShards = 5, int numberOfReplicas = 1) where T : class
         {
             if (string.IsNullOrWhiteSpace(indexName))
             {
@@ -27,13 +28,13 @@ namespace EasyElasticSearch
                     },
                 };
 
-                var response = elasticClient.Indices.Create(indexName, p => p.InitializeUsing(indexState).Map<T>(x => x.AutoMap()));
+                var response = await elasticClient.Indices.CreateAsync(indexName, p => p.InitializeUsing(indexState).Map<T>(x => x.AutoMap()));
                 if (!response.IsValid)
                     throw new Exception($"创建失败:{response.OriginalException.Message}");
                 return response.Acknowledged;
             }
         }
 
-      
+
     }
 }
