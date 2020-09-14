@@ -3,7 +3,7 @@
     "WebSample": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "home/index",
+      "launchUrl": "es/page",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -20,8 +20,7 @@ namespace WebSample.Controllers
             Func<SearchDescriptor<RegistryRecord>, ISearchRequest> request = searchDescriptor => searchDescriptor
                              .Index("registryrecord")
                              .From(0)
-                             .Size(10)
-                             .Query(q => q.Match(t => t.Field(x => x.UserName).Query("es")));
+                             .Size(10);
 
 
             var s = _esClientProvider.Client.Search(request);

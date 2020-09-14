@@ -85,15 +85,6 @@ namespace EasyElasticSearch
             return response;
         }
 
-        public ISearchRequest Queryable<T>(string index = "") where T : class, new()
-        {
-            return new SearchRequest(index.GetIndex<T>());
-        }
-
-
-
-
-
         #endregion
 
         #region Delete
