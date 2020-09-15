@@ -13,8 +13,6 @@ namespace EasyElasticSearch
         public ExpressionContext Context { get; set; }
         public bool? IsLeft { get; set; }
 
-        public int Index { get; set; }
-
         public ExpressionParameter BaseParameter { get; set; }
 
         private BaseResolve()

@@ -1,9 +1,7 @@
-﻿using Nest;
-
-namespace EasyElasticSearch
+﻿namespace EasyElasticSearch
 {
     public interface ISearchProvider
     {
-        ISearchResponse<T> SearchPage<T>(ElasticsearchPage<T> page) where T : class, new();
+        IEsQueryable<T> Queryable<T>() where T: class;
     }
 }

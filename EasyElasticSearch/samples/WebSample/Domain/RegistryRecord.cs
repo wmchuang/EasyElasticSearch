@@ -1,5 +1,5 @@
-﻿using EasyElasticSearch.Entity;
-using System;
+﻿using System;
+using EasyElasticSearch.Entity;
 
 namespace WebSample.Domain
 {
@@ -10,5 +10,5 @@ namespace WebSample.Domain
         public string UserName { get; set; }
 
         public DateTime RegistryTime { get; set; } = DateTime.Now;
-    } 
+    }
 }

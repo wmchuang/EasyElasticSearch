@@ -6,9 +6,10 @@ namespace EasyElasticSearch
     {
         public MemberConstExpressionResolve(ExpressionParameter parameter) : base(parameter)
         {
-            var expression = base.Expression as MemberExpression;
-            object value = ExpressionTool.GetMemberValue(expression.Member, expression);
-            base.Context.ValueList.Add(value);
+            var expression = Expression as MemberExpression;
+            var value = ExpressionTool.GetMemberValue(expression.Member, expression);
+            Context.LastValue = value;
+            // base.Context.ValueList.Add(value);
         }
     }
 }

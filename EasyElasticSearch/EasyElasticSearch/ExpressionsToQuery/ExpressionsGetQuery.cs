@@ -1,16 +1,17 @@
-﻿using Nest;
-using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using EasyElasticSearch.Entity.Mapping;
+using Nest;
 
 namespace EasyElasticSearch
 {
     public class ExpressionsGetQuery
     {
-        public static QueryContainer GetQuery<T>(Expression<Func<T, bool>> expression) where T : class, new()
+        public static QueryContainer GetQuery(Expression expression,MappingIndex mappingIndex)
         {
-            var parameter = new ExpressionParameter() { CurrentExpression = expression, Context = new ExpressionContext() };
+            var parameter = new ExpressionParameter {CurrentExpression = expression, Context = new ExpressionContext(mappingIndex)};
             new BaseResolve(parameter).Start();
-            return parameter.Context.GetQuery<T>();
+            return parameter.Context.QueryContainer;
+            //return parameter.Context.GetQuery();
         }
     }
 }

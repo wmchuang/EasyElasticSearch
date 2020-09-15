@@ -6,9 +6,10 @@ namespace EasyElasticSearch
     {
         public ConstantExpressionResolve(ExpressionParameter parameter) : base(parameter)
         {
-            var expression = base.Expression as ConstantExpression;
-            object value = ExpressionTool.GetValue(expression.Value);
-            base.Context.ValueList.Add(value);
+            var expression = Expression as ConstantExpression;
+            var value = ExpressionTool.GetValue(expression.Value);
+            Context.LastValue = value;
+            // base.Context.ValueList.Add(value);
         }
     }
 }

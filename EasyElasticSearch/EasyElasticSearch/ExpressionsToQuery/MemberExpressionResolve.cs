@@ -4,13 +4,15 @@ namespace EasyElasticSearch
 {
     public class MemberExpressionResolve : BaseResolve
     {
-        public ExpressionParameter Parameter { get; set; }
-
         public MemberExpressionResolve(ExpressionParameter parameter) : base(parameter)
         {
-            var leftexp = base.Expression as MemberExpression;
+            var leftexp = Expression as MemberExpression;
             var memberName = leftexp.Member.Name;
-            base.Context.MemberNameList.Add(memberName);
+
+            Context.LastFiled = memberName;
+            // base.Context.MemberNameList.Add(memberName);
         }
+
+        public ExpressionParameter Parameter { get; set; }
     }
 }
