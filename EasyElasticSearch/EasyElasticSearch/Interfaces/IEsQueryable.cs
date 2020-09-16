@@ -17,5 +17,6 @@ namespace EasyElasticSearch
         Task<List<T>> ToListAsync();
         List<T> ToPageList(int pageIndex, int pageSize);
         List<T> ToPageList(int pageIndex, int pageSize, ref long totalNumber);
+        IEsQueryable<T> OrderBy(Expression<Func<T, object>> expression, OrderByType type = OrderByType.Asc);
     }
 }

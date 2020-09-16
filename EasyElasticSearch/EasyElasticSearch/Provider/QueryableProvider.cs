@@ -16,12 +16,13 @@ namespace EasyElasticSearch
 
         private readonly ISearchRequest _request;
 
-        private long _TotalNumber = 0;
+        private long _TotalNumber;
 
         public QueryableProvider(MappingIndex mappingIndex, IElasticClient client)
         {
             _mappingIndex = mappingIndex;
             _request = new SearchRequest(_mappingIndex.IndexName);
+            _request.Size = 10000;
             _client = client;
         }
 
@@ -49,12 +50,32 @@ namespace EasyElasticSearch
             _request.Size = pageSize;
             return _ToList<T>();
         }
-        
+
         public virtual List<T> ToPageList(int pageIndex, int pageSize, ref long totalNumber)
         {
             var list = ToPageList(pageIndex, pageSize);
             totalNumber = _TotalNumber;
             return list;
+        }
+
+        public virtual IEsQueryable<T> OrderBy(Expression<Func<T, object>> expression, OrderByType type = OrderByType.Asc)
+        {
+            _OrderBy(expression, type);
+            return this;
+        }
+
+        private void _OrderBy(Expression expression, OrderByType type = OrderByType.Asc)
+        {
+            var propertyName = ReflectionExtensionHelper.GetProperty(expression as LambdaExpression).Name;
+            propertyName = _mappingIndex.Columns.FirstOrDefault(x => x.PropertyName == propertyName)?.SearchName ?? propertyName;
+            _request.Sort = new ISort[]
+            {
+                new FieldSort
+                {
+                    Field = propertyName,
+                    Order = type == OrderByType.Asc ? SortOrder.Ascending : SortOrder.Descending
+                }
+            };
         }
 
         private List<TResult> _ToList<TResult>() where TResult : class

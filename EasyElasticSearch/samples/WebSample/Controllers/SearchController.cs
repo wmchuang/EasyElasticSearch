@@ -14,9 +14,9 @@ namespace WebSample.Controllers
             _searchProvider = searchProvider;
         }
 
-        public IActionResult Search()
+        public IActionResult Index()
         {
-            var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToList();
+            var data = _searchProvider.Queryable<User>().OrderBy(x => x.Money).ToList();
             return Ok(data);
         }
 
