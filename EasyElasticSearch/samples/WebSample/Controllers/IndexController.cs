@@ -17,7 +17,7 @@ namespace WebSample.Controllers
 
         public IActionResult InsertAsync()
         {
-            var user = new User
+            var user = new Manager
             {
                 UserId = "123123123",
                 UserName = DateTime.Now.Minute.ToString(),

@@ -131,7 +131,7 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult AddAlias()
         {
-            _aliasProvider.AddAlias<RegistryRecord>("12312321");
+            _aliasProvider.AddAliasAsync<RegistryRecord>("12312321");
             return Ok("Success");
         }
 

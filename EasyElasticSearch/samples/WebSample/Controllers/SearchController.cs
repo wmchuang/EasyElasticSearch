@@ -1,4 +1,5 @@
-﻿using EasyElasticSearch;
+﻿using System.Threading.Tasks;
+using EasyElasticSearch;
 using Microsoft.AspNetCore.Mvc;
 using WebSample.Domain;
 
@@ -15,7 +16,26 @@ namespace WebSample.Controllers
 
         public IActionResult Index()
         {
-            var data = _searchProvider.Queryable<User>().Where(x => x.UserName.Contains("5")).ToList();
+            var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToList();
+            return Ok(data);
+        }
+
+        public IActionResult SearchPage()
+        {
+            var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToPageList(1, 2);
+            return Ok(data);
+        }
+
+        public IActionResult SearchPageNumber()
+        {
+            long total = 0;
+            var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToPageList(1, 2, ref total);
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> SearchAsync()
+        {
+            var data = await _searchProvider.Queryable<User>().Where(x => x.UserName.Contains("5")).ToListAsync();
             return Ok(data);
         }
     }

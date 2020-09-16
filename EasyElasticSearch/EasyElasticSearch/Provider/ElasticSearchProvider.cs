@@ -61,7 +61,11 @@ namespace EasyElasticSearch
         {
             var indexName = index.GetIndex<T>();
             var exists = await IndexExistsAsync(indexName);
-            if (!exists) await ((ElasticClient) _elasticClient).CreateIndexAsync<T>(indexName);
+            if (!exists)
+            {
+                await ((ElasticClient) _elasticClient).CreateIndexAsync<T>(indexName);
+                await AddAliasAsync(indexName, typeof(T).Name);
+            }
 
             var response = await _elasticClient.IndexAsync(entity,
                 s => s.Index(indexName));
@@ -74,7 +78,11 @@ namespace EasyElasticSearch
         {
             var indexName = index.GetIndex<T>();
             var exists = await IndexExistsAsync(indexName);
-            if (!exists) await ((ElasticClient) _elasticClient).CreateIndexAsync<T>(indexName);
+            if (!exists)
+            {
+                await ((ElasticClient) _elasticClient).CreateIndexAsync<T>(indexName);
+                await AddAliasAsync(indexName, typeof(T).Name);
+            }
 
             var bulkRequest = new BulkRequest(indexName)
             {
@@ -102,9 +110,9 @@ namespace EasyElasticSearch
 
         #region Alias
 
-        public BulkAliasResponse AddAlias(string index, string alias)
+        public async Task<BulkAliasResponse> AddAliasAsync(string index, string alias)
         {
-            var response = _elasticClient.Indices.BulkAlias(b => b.Add(al => al
+            var response = await _elasticClient.Indices.BulkAliasAsync(b => b.Add(al => al
                 .Index(index)
                 .Alias(alias)));
 
@@ -113,9 +121,9 @@ namespace EasyElasticSearch
             return response;
         }
 
-        public BulkAliasResponse AddAlias<T>(string alias) where T : class
+        public async Task<BulkAliasResponse> AddAliasAsync<T>(string alias) where T : class
         {
-            return AddAlias(string.Empty.GetIndex<T>(), alias);
+            return await AddAliasAsync(string.Empty.GetIndex<T>(), alias);
         }
 
         public BulkAliasResponse RemoveAlias(string index, string alias)
