@@ -14,7 +14,7 @@ namespace WebSample.Controllers
             _searchProvider = searchProvider;
         }
 
-        public IActionResult Index()
+        public IActionResult Search()
         {
             var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToList();
             return Ok(data);

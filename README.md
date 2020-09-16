@@ -11,18 +11,10 @@ Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析
 ## 查询
 ```csharp
  [HttpGet]
- public IActionResult Page()
+ public IActionResult Search()
  {
-     var page = new ElasticsearchPage<RegistryRecord>()
-     {
-         PageIndex = 1,
-         PageSize = 100,
-         Query = x => x.UserName == "es"
-     };
-
-     var data = _searchProvider.SearchPage<RegistryRecord>(page);
-     data.Hits.ToList().ForEach(x => Console.WriteLine(x.Id));
-     return new JsonResult(data.Documents);
+     var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToList();
+     return Ok(data);
  }
 ```
 
