@@ -15,7 +15,7 @@ namespace WebSample.Controllers
 
         public IActionResult Index()
         {
-            var data = _searchProvider.Queryable<RegistryRecord>().Where(x => x.UserName == "es").ToList();
+            var data = _searchProvider.Queryable<User>().Where(x => x.UserName.Contains("5")).ToList();
             return Ok(data);
         }
     }

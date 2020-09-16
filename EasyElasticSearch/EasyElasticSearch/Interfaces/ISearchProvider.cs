@@ -2,6 +2,6 @@
 {
     public interface ISearchProvider
     {
-        IEsQueryable<T> Queryable<T>() where T: class;
+        IEsQueryable<T> Queryable<T>() where T : class;
     }
 }

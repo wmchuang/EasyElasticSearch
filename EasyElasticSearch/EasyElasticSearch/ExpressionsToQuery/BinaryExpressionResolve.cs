@@ -10,11 +10,12 @@ namespace EasyElasticSearch
             var operatorValue = ExpressionTool.GetOperator(expression.NodeType);
 
             Context.LastQueryBase = operatorValue;
+
             // if (operatorValue != null)
             //     base.Context.QueryList.Add(operatorValue);
             //
-            // if (ExpressionTool.IsOperator(expression.NodeType))
-            //     base.Context.OperatorList.Add(expression.NodeType);
+            if (ExpressionTool.IsOperator(expression.NodeType))
+                Context.LastOperator = expression.NodeType;
 
             var leftExpression = expression.Left;
             var rightExpression = expression.Right;

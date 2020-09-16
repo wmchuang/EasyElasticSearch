@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
+using Nest;
 
 namespace EasyElasticSearch
 {
@@ -10,12 +11,14 @@ namespace EasyElasticSearch
             var express = Expression as MethodCallExpression;
             if (express == null) return;
             var methodName = express.Method.Name;
-            //
-            // if (methodName == "Contains")
-            // {
-            //     base.Context.QueryList.Add(new QueryStringQuery());
-            //     NativeExtensionMethod(express);
-            // }
+
+            if (methodName == "Contains")
+            {
+                Context.LastQueryBase = new QueryStringQuery();
+                NativeExtensionMethod(express);
+            }
+
+            Context.SetQuery();
         }
 
         private void NativeExtensionMethod(MethodCallExpression express)
@@ -25,8 +28,8 @@ namespace EasyElasticSearch
 
             foreach (var item in args)
             {
-                var expItem = item;
-                if (item is UnaryExpression) expItem = (item as UnaryExpression).Operand;
+                // var expItem = item;
+                // if (item is UnaryExpression) expItem = (item as UnaryExpression).Operand;
                 Expression = item;
                 Start();
             }

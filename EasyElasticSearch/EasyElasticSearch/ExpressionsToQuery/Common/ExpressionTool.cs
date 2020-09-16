@@ -1,8 +1,8 @@
-﻿using Nest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using Nest;
 
 namespace EasyElasticSearch
 {
@@ -10,8 +10,8 @@ namespace EasyElasticSearch
     {
         public static bool IsOperator(ExpressionType expressiontype)
         {
-            return (expressiontype == ExpressionType.And || expressiontype == ExpressionType.AndAlso
-                || expressiontype == ExpressionType.Or || expressiontype == ExpressionType.OrElse);
+            return expressiontype == ExpressionType.And || expressiontype == ExpressionType.AndAlso
+                                                        || expressiontype == ExpressionType.Or || expressiontype == ExpressionType.OrElse;
         }
 
         public static QueryBase GetOperator(ExpressionType expressiontype)
@@ -42,26 +42,25 @@ namespace EasyElasticSearch
                     };
                 case ExpressionType.NotEqual:
                     return new BoolQuery();
-       
+
                 default:
                     return null;
             }
         }
-         
+
         public static object GetValue(object value)
         {
-            if (value == null) return value;
+            if (value == null) return null;
             var type = value.GetType();
             if (type.GetTypeInfo().IsEnum) return Convert.ToInt64(value);
-            else
-                return value;
+            return value;
         }
 
         public static object GetMemberValue(MemberInfo member, Expression expression)
         {
             var rootExpression = expression as MemberExpression;
             var memberInfos = new Stack<MemberInfo>();
-            var fieldInfo = member as System.Reflection.FieldInfo;
+            var fieldInfo = member as FieldInfo;
             object reval = null;
             MemberExpression memberExpr = null;
             while (expression is MemberExpression)
@@ -88,20 +87,24 @@ namespace EasyElasticSearch
                         //reval = GetFiledValue(memberExpr);
                     }
                 }
+
                 if (memberExpr.Expression == null)
                 {
                 }
+
                 expression = memberExpr.Expression;
             }
+
             // fetch the root object reference:
             var constExpr = expression as ConstantExpression;
             if (constExpr == null)
             {
                 // DynamicInvoke(rootExpression);
             }
-            object objReference = constExpr.Value;
+
+            var objReference = constExpr.Value;
             // "ascend" back whence we came from and resolve object references along the way:
-            while (memberInfos.Count > 0)  // or some other break condition
+            while (memberInfos.Count > 0) // or some other break condition
             {
                 var mi = memberInfos.Pop();
                 if (mi.MemberType == MemberTypes.Property)
@@ -129,6 +132,7 @@ namespace EasyElasticSearch
                     }
                 }
             }
+
             reval = objReference;
             return reval;
         }

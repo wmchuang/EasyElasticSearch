@@ -13,11 +13,21 @@ namespace EasyElasticSearch
                 return type switch
                 {
                     "String" => filed + ".keyword",
-                    _ => filed,
+                    _ => filed
                 };
             }
 
             return filed;
+        }
+
+        public static string GetValues(string propertyTypeName, string filed)
+        {
+            filed = filed.ToFirstLower();
+            return propertyTypeName switch
+            {
+                "String" => filed + ".keyword",
+                _ => filed
+            };
         }
     }
 }

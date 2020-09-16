@@ -1,7 +1,7 @@
-﻿using EasyElasticSearch;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using EasyElasticSearch;
+using Microsoft.AspNetCore.Mvc;
 using WebSample.Domain;
 
 namespace WebSample.Controllers
@@ -15,39 +15,39 @@ namespace WebSample.Controllers
             _indexProvider = indexProvider;
         }
 
-        public IActionResult AddAsync()
+        public IActionResult InsertAsync()
         {
             var user = new User
             {
                 UserId = "123123123",
-                UserName = "MC",
+                UserName = DateTime.Now.Minute.ToString(),
                 CreateTime = DateTime.Now,
-                Money = 100m
+                Money = 110m
             };
-            _indexProvider.AddAsync(user);
+            _indexProvider.InsertAsync(user);
             return Ok("Yes");
         }
 
-        public IActionResult AddManyAsync()
+        public IActionResult InsertRangeAsync()
         {
             var users = new List<User>
             {
-               new User
+                new User
                 {
                     UserId = "123123123",
-                    UserName = "MC",
+                    UserName = DateTime.Now.Minute.ToString(),
                     CreateTime = DateTime.Now,
-                    Money = 100m
+                    Money = 80m
                 },
-               new User
+                new User
                 {
                     UserId = "456456",
-                    UserName = "MC",
+                    UserName = DateTime.Now.Minute.ToString(),
                     CreateTime = DateTime.Now,
-                    Money = 120m
-                },
+                    Money = 90m
+                }
             };
-            _indexProvider.AddManyAsync(users);
+            _indexProvider.InsertRangeAsync(users);
             return Ok("Yes");
         }
     }

@@ -32,7 +32,7 @@ namespace EasyElasticSearch
                 {
                     PropertyInfo = property.PropertyType,
                     PropertyName = property.Name,
-                    SearchName = "userName"
+                    SearchName = FiledHelp.GetValues(property.PropertyType.Name, property.Name)
                 });
             return mapping;
         }

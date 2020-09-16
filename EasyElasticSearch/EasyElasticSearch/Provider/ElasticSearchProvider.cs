@@ -22,10 +22,7 @@ namespace EasyElasticSearch
             where T : class, new()
         {
             var indexName = index.GetIndex<T>();
-            var request = new DeleteByQueryRequest<T>(indexName)
-            {
-               // Query = ExpressionsGetQuery.GetQuery(expression)
-            };
+            var request = new DeleteByQueryRequest<T>(indexName);
             var response = _elasticClient.DeleteByQuery(request);
             if (!response.IsValid)
                 throw new Exception("删除失败:" + response.OriginalException.Message);
@@ -60,7 +57,7 @@ namespace EasyElasticSearch
             return res.Exists;
         }
 
-        public async Task AddAsync<T>(T entity, string index = "") where T : class
+        public async Task InsertAsync<T>(T entity, string index = "") where T : class
         {
             var indexName = index.GetIndex<T>();
             var exists = await IndexExistsAsync(indexName);
@@ -73,7 +70,7 @@ namespace EasyElasticSearch
                 throw new Exception("新增数据失败:" + response.OriginalException.Message);
         }
 
-        public async Task AddManyAsync<T>(IEnumerable<T> entity, string index) where T : class
+        public async Task InsertRangeAsync<T>(IEnumerable<T> entity, string index) where T : class
         {
             var indexName = index.GetIndex<T>();
             var exists = await IndexExistsAsync(indexName);

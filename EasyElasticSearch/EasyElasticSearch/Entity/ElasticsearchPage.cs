@@ -1,13 +1,17 @@
-﻿using Nest;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Nest;
 
 namespace EasyElasticSearch
 {
     public class ElasticsearchPage<T> where T : class, new()
     {
+        public ElasticsearchPage(string index = "")
+        {
+            Index = index.GetIndex<T>();
+        }
+
         /// <summary>
-        /// 哈哈哈
         /// </summary>
         public string Index { get; set; }
 
@@ -16,11 +20,6 @@ namespace EasyElasticSearch
         public int PageIndex { get; set; }
 
         public Expression<Func<T, bool>> Query { get; set; }
-
-        public ElasticsearchPage(string index = "")
-        {
-            Index = index.GetIndex<T>();
-        }
 
         public ISearchRequest InitSearchRequest()
         {

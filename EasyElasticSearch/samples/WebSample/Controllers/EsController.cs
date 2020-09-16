@@ -93,7 +93,7 @@ namespace WebSample.Controllers
                 RegistryTime = DateTime.Now
             };
 
-            await _indexProvider.AddAsync(record);
+            await _indexProvider.InsertAsync(record);
             return Ok("Success");
         }
 
@@ -120,7 +120,7 @@ namespace WebSample.Controllers
                 }
             };
 
-            _indexProvider.AddManyAsync(records);
+            _indexProvider.InsertRangeAsync(records);
             return Ok("Success");
         }
 
