@@ -5,6 +5,11 @@ namespace EasyElasticSearch
 {
     public interface IIndexProvider
     {
+        /// <summary>
+        ///     是否存在
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         Task<bool> IndexExistsAsync(string index);
 
         /// <summary>

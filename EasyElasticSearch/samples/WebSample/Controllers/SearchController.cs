@@ -7,11 +7,20 @@ namespace WebSample.Controllers
 {
     public class SearchController : BaseController
     {
+        private readonly IEsClientProvider _clientProvider;
         private readonly ISearchProvider _searchProvider;
 
-        public SearchController(ISearchProvider searchProvider)
+        public SearchController(ISearchProvider searchProvider, IEsClientProvider clientProvider)
         {
             _searchProvider = searchProvider;
+            _clientProvider = clientProvider;
+        }
+
+        public IActionResult Test()
+        {
+            var data = _clientProvider.Client.Search<User>(x => x.Index("User")
+                .Query(q => q.Term("userName", "53")));
+            return Ok(data.Documents);
         }
 
         public IActionResult Index()

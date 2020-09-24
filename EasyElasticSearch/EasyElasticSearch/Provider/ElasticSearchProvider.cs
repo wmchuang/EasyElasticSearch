@@ -51,6 +51,7 @@ namespace EasyElasticSearch
 
         #region Index
 
+        /// <inheritdoc cref="IIndexProvider.IndexExistsAsync" />
         public async Task<bool> IndexExistsAsync(string index)
         {
             var res = await _elasticClient.Indices.ExistsAsync(index);

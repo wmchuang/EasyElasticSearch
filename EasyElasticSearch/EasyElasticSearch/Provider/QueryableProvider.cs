@@ -16,7 +16,7 @@ namespace EasyElasticSearch
 
         private readonly ISearchRequest _request;
 
-        private long _TotalNumber;
+        private long _totalNumber;
 
         public QueryableProvider(MappingIndex mappingIndex, IElasticClient client)
         {
@@ -54,7 +54,7 @@ namespace EasyElasticSearch
         public virtual List<T> ToPageList(int pageIndex, int pageSize, ref long totalNumber)
         {
             var list = ToPageList(pageIndex, pageSize);
-            totalNumber = _TotalNumber;
+            totalNumber = _totalNumber;
             return list;
         }
 
@@ -62,6 +62,26 @@ namespace EasyElasticSearch
         {
             _OrderBy(expression, type);
             return this;
+        }
+
+        public IEsQueryable<T> GroupBy(Expression<Func<T, object>> expression)
+        {
+            _GroupBy(expression);
+            return this;
+        }
+
+        private void _GroupBy(Expression expression)
+        {
+            // var propertyName = ReflectionExtensionHelper.GetProperty(expression as LambdaExpression).Name;
+            // propertyName = _mappingIndex.Columns.FirstOrDefault(x => x.PropertyName == propertyName)?.SearchName ?? propertyName;
+            // _request.Aggregations = new AggregationDictionary
+            // {
+            //     TermQuery = new TermsAggregation(propertyName)
+            //     {
+            //         Field = propertyName,
+            //         Size = 1000
+            //     }
+            // };
         }
 
         private void _OrderBy(Expression expression, OrderByType type = OrderByType.Asc)
@@ -87,7 +107,7 @@ namespace EasyElasticSearch
             if (!response.IsValid)
                 throw new Exception($"查询失败:{response.OriginalException.Message}");
 
-            _TotalNumber = response.Total;
+            _totalNumber = response.Total;
             return response.Documents.ToList();
         }
 
@@ -99,7 +119,7 @@ namespace EasyElasticSearch
 
             if (!response.IsValid)
                 throw new Exception($"查询失败:{response.OriginalException.Message}");
-            _TotalNumber = response.Total;
+            _totalNumber = response.Total;
             return response.Documents.ToList();
         }
 

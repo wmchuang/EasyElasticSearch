@@ -7,14 +7,7 @@ namespace EasyElasticSearch
     {
         public static string GetIndex<T>(this string index) where T : class
         {
-            if (!string.IsNullOrWhiteSpace(index))
-            {
-                return index;
-            }
-            else
-            {
-                return typeof(T).Name.ToLower();
-            }
+            return !string.IsNullOrWhiteSpace(index) ? index : typeof(T).Name.ToLower();
         }
 
         public static string ToFirstLower(this string str)
@@ -23,7 +16,7 @@ namespace EasyElasticSearch
         }
 
         /// <summary>
-        /// Convert a string to camel-case.
+        ///     Convert a string to camel-case.
         /// </summary>
         /// <param name="value">Input string to be camel-cased.</param>
         /// <param name="culture">CultureInfo to be used to lower-case first character.</param>

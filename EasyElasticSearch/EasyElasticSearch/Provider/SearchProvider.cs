@@ -19,7 +19,7 @@ namespace EasyElasticSearch
             return new QueryableProvider<T>(mapping, _elasticClient);
         }
 
-        private MappingIndex InitMappingInfo<T>()
+        private static MappingIndex InitMappingInfo<T>()
         {
             return InitMappingInfo(typeof(T));
         }

@@ -1,110 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using System.Linq.Expressions;
 
 namespace EasyElasticSearch
 {
     public class BaseResolve
     {
-        protected Expression Expression { get; set; }
-        protected Expression ExactExpression { get; set; }
-
-        public ExpressionContext Context { get; set; }
-        public bool? IsLeft { get; set; }
-
-        public ExpressionParameter BaseParameter { get; set; }
-
         private BaseResolve()
         {
         }
 
         public BaseResolve(ExpressionParameter parameter)
         {
-            this.Expression = parameter.CurrentExpression;
-            this.Context = parameter.Context;
-            this.BaseParameter = parameter;
+            Expression = parameter.CurrentExpression;
+            Context = parameter.Context;
+            BaseParameter = parameter;
         }
+
+        protected Expression Expression { get; set; }
+        private Expression ExactExpression { get; set; }
+
+        protected ExpressionContext Context { get; set; }
+        protected bool? IsLeft { get; set; }
+
+        private ExpressionParameter BaseParameter { get; }
 
         public BaseResolve Start()
         {
-            Expression expression = this.Expression;
-            ExpressionParameter parameter = new ExpressionParameter()
+            var expression = Expression;
+            var parameter = new ExpressionParameter
             {
-                Context = this.Context,
+                Context = Context,
                 CurrentExpression = expression,
-                BaseExpression = this.ExactExpression,
-                BaseParameter = this.BaseParameter,
+                BaseExpression = ExactExpression,
+                BaseParameter = BaseParameter
             };
-            if (expression is LambdaExpression)
+            return expression switch
             {
-                return new LambdaExpressionResolve(parameter);
-            }
-            //else if (expression is BinaryExpression && expression.NodeType == ExpressionType.Coalesce)
-            //{
-            //    return new CoalesceResolveItems(parameter);
-            //}
-            else if (expression is BinaryExpression)
-            {
-                return new BinaryExpressionResolve(parameter);
-            }
-            //else if (expression is BlockExpression)
-            //{
-            //    Check.ThrowNotSupportedException("BlockExpression");
-            //}
-            //else if (expression is ConditionalExpression)
-            //{
-            //    return new ConditionalExpressionResolve(parameter);
-            //}
-            else if (expression is MethodCallExpression)
-            {
-                return new MethodCallExpressionResolve(parameter);
-            }
-            //else if (expression is MemberExpression && ((MemberExpression)expression).Expression == null)
-            //{
-            //    return new MemberNoExpressionResolve(parameter);
-            //}
-            else if (expression is MemberExpression && ((MemberExpression)expression).Expression.NodeType == ExpressionType.Constant)
-            {
-                return new MemberConstExpressionResolve(parameter);
-            }
-            //else if (expression is MemberExpression && ((MemberExpression)expression).Expression.NodeType == ExpressionType.New)
-            //{
-            //    return new MemberNewExpressionResolve(parameter);
-            //}
-            else if (expression is ConstantExpression)
-            {
-                return new ConstantExpressionResolve(parameter);
-            }
-            else if (expression is MemberExpression)
-            {
-                return new MemberExpressionResolve(parameter);
-            }
-            //else if (expression is UnaryExpression)
-            //{
-            //    return new UnaryExpressionResolve(parameter);
-            //}
-            //else if (expression is MemberInitExpression)
-            //{
-            //    return new MemberInitExpressionResolve(parameter);
-            //}
-            //else if (expression is NewExpression)
-            //{
-            //    return new NewExpressionResolve(parameter);
-            //}
-            //else if (expression is NewArrayExpression)
-            //{
-            //    return new NewArrayExpessionResolve(parameter);
-            //}
-            //else if (expression is ParameterExpression)
-            //{
-            //    return new TypeParameterExpressionReolve(parameter);
-            //}
-            //else if (expression != null && expression.NodeType.IsIn(ExpressionType.NewArrayBounds))
-            //{
-            //    Check.ThrowNotSupportedException("ExpressionType.NewArrayBounds");
-            //}
-            return null;
+                //else if (expression is BinaryExpression && expression.NodeType == ExpressionType.Coalesce)
+                //{
+                //    return new CoalesceResolveItems(parameter);
+                //}
+                LambdaExpression _ => new LambdaExpressionResolve(parameter),
+                //else if (expression is BlockExpression)
+                //{
+                //    Check.ThrowNotSupportedException("BlockExpression");
+                //}
+                //else if (expression is ConditionalExpression)
+                //{
+                //    return new ConditionalExpressionResolve(parameter);
+                //}
+                BinaryExpression _ => new BinaryExpressionResolve(parameter),
+                //else if (expression is MemberExpression && ((MemberExpression)expression).Expression == null)
+                //{
+                //    return new MemberNoExpressionResolve(parameter);
+                //}
+                MethodCallExpression _ => new MethodCallExpressionResolve(parameter),
+                //else if (expression is MemberExpression && ((MemberExpression)expression).Expression.NodeType == ExpressionType.New)
+                //{
+                //    return new MemberNewExpressionResolve(parameter);
+                //}
+                MemberExpression memberExpression when memberExpression.Expression.NodeType == ExpressionType.Constant => new MemberConstExpressionResolve(parameter),
+                ConstantExpression _ => new ConstantExpressionResolve(parameter),
+                MemberExpression _ => new MemberExpressionResolve(parameter),
+                _ => null
+            };
         }
     }
 }
