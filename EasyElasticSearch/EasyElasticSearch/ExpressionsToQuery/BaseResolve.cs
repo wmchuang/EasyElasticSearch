@@ -4,10 +4,6 @@ namespace EasyElasticSearch
 {
     public class BaseResolve
     {
-        private BaseResolve()
-        {
-        }
-
         public BaseResolve(ExpressionParameter parameter)
         {
             Expression = parameter.CurrentExpression;

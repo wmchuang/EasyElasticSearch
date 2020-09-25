@@ -11,9 +11,6 @@ namespace EasyElasticSearch
 
             Context.LastQueryBase = operatorValue;
 
-            // if (operatorValue != null)
-            //     base.Context.QueryList.Add(operatorValue);
-            //
             if (ExpressionTool.IsOperator(expression.NodeType))
                 Context.LastOperator = expression.NodeType;
 

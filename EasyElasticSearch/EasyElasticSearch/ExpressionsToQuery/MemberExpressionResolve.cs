@@ -10,7 +10,6 @@ namespace EasyElasticSearch
             var memberName = leftexp.Member.Name;
 
             Context.LastFiled = memberName;
-            // base.Context.MemberNameList.Add(memberName);
         }
 
         public ExpressionParameter Parameter { get; set; }

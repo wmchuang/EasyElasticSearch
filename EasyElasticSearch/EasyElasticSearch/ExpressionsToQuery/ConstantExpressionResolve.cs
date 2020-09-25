@@ -9,7 +9,6 @@ namespace EasyElasticSearch
             var expression = Expression as ConstantExpression;
             var value = ExpressionTool.GetValue(expression.Value);
             Context.LastValue = value;
-            // base.Context.ValueList.Add(value);
         }
     }
 }

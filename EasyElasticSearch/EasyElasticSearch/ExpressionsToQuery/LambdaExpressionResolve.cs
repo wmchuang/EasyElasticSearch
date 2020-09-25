@@ -6,10 +6,10 @@ namespace EasyElasticSearch
     {
         public LambdaExpressionResolve(ExpressionParameter parameter) : base(parameter)
         {
-            LambdaExpression lambda = base.Expression as LambdaExpression;
+            var lambda = Expression as LambdaExpression;
             var expression = lambda.Body;
-            base.Expression = expression;
-            base.Start();
+            Expression = expression;
+            Start();
         }
     }
 }

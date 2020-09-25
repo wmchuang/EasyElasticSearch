@@ -28,8 +28,6 @@ namespace EasyElasticSearch
 
             foreach (var item in args)
             {
-                // var expItem = item;
-                // if (item is UnaryExpression) expItem = (item as UnaryExpression).Operand;
                 Expression = item;
                 Start();
             }

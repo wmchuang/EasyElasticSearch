@@ -7,17 +7,13 @@ namespace EasyElasticSearch
         public static string GetValues(object obj, string filed)
         {
             var type = obj.GetType().GetProperties().Where(x => x.Name == filed).Select(x => x.PropertyType.Name).FirstOrDefault();
-            if (type != null)
+            if (type == null) return filed;
+            filed = filed.ToFirstLower();
+            return type switch
             {
-                filed = filed.ToFirstLower();
-                return type switch
-                {
-                    "String" => filed + ".keyword",
-                    _ => filed
-                };
-            }
-
-            return filed;
+                "String" => filed + ".keyword",
+                _ => filed
+            };
         }
 
         public static string GetValues(string propertyTypeName, string filed)

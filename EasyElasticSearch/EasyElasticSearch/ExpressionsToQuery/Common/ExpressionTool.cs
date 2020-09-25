@@ -52,8 +52,7 @@ namespace EasyElasticSearch
         {
             if (value == null) return null;
             var type = value.GetType();
-            if (type.GetTypeInfo().IsEnum) return Convert.ToInt64(value);
-            return value;
+            return type.GetTypeInfo().IsEnum ? Convert.ToInt64(value) : value;
         }
 
         public static object GetMemberValue(MemberInfo member, Expression expression)

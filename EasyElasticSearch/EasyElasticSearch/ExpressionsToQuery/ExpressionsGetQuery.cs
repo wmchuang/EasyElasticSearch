@@ -6,12 +6,11 @@ namespace EasyElasticSearch
 {
     public class ExpressionsGetQuery
     {
-        public static QueryContainer GetQuery(Expression expression,MappingIndex mappingIndex)
+        public static QueryContainer GetQuery(Expression expression, MappingIndex mappingIndex)
         {
             var parameter = new ExpressionParameter {CurrentExpression = expression, Context = new ExpressionContext(mappingIndex)};
             new BaseResolve(parameter).Start();
             return parameter.Context.QueryContainer;
-            //return parameter.Context.GetQuery();
         }
     }
 }
