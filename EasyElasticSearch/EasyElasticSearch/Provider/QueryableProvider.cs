@@ -21,8 +21,7 @@ namespace EasyElasticSearch
         public QueryableProvider(MappingIndex mappingIndex, IElasticClient client)
         {
             _mappingIndex = mappingIndex;
-            _request = new SearchRequest(_mappingIndex.IndexName);
-            _request.Size = 10000;
+            _request = new SearchRequest(_mappingIndex.IndexName) {Size = 10000};
             _client = client;
         }
 
@@ -70,7 +69,7 @@ namespace EasyElasticSearch
             return this;
         }
 
-        private void _GroupBy(Expression expression)
+        private static void _GroupBy(Expression expression)
         {
             // var propertyName = ReflectionExtensionHelper.GetProperty(expression as LambdaExpression).Name;
             // propertyName = _mappingIndex.Columns.FirstOrDefault(x => x.PropertyName == propertyName)?.SearchName ?? propertyName;

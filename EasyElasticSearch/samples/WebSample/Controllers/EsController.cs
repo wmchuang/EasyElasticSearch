@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyElasticSearch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using WebSample.Domain;
 
 namespace WebSample.Controllers
@@ -15,7 +14,7 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult Delete()
         {
-            _deleteProvider.DeleteByQuery<RegistryRecord>(x => x.UserName == "Bulkes1");
+            _deleteProvider.DeleteByQuery<RegistryRecord>(x => x.UserName == "Bulks1");
             return Ok("Success");
         }
 
@@ -44,15 +43,11 @@ namespace WebSample.Controllers
         private readonly IUpdateProvider _updateProvider;
         private readonly IAliasProvider _aliasProvider;
 
-        private readonly ILogger<EsController> _logger;
-
-        public EsController(ILogger<EsController> logger,
-            IIndexProvider indexProvider,
+        public EsController(IIndexProvider indexProvider,
             IDeleteProvider deleteProvider,
             IUpdateProvider updateProvider,
             IAliasProvider aliasProvider)
         {
-            _logger = logger;
             _indexProvider = indexProvider;
             _deleteProvider = deleteProvider;
             _updateProvider = updateProvider;
@@ -66,7 +61,7 @@ namespace WebSample.Controllers
         // [HttpGet]
         // public IActionResult Page()
         // {
-        //     var list = new List<string> { "Bulkes2", "es" };
+        //     var list = new List<string> { "Bulks2", "es" };
         //     var page = new ElasticsearchPage<RegistryRecord>()
         //     {
         //         PageIndex = 1,
@@ -109,7 +104,7 @@ namespace WebSample.Controllers
                 new RegistryRecord
                 {
                     UserId = "1268436794379079680",
-                    UserName = "Bulkes1",
+                    UserName = "Bulks1",
                     RegistryTime = DateTime.Now
                 },
                 new RegistryRecord

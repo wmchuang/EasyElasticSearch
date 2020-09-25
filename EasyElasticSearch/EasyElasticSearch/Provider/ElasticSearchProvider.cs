@@ -101,7 +101,7 @@ namespace EasyElasticSearch
         {
             var exists = await IndexExistsAsync(index);
             if (!exists) return;
-            var response = _elasticClient.Indices.Delete(index);
+            var response = await _elasticClient.Indices.DeleteAsync(index);
 
             if (!response.IsValid)
                 throw new Exception("删除index失败:" + response.OriginalException.Message);
@@ -141,12 +141,6 @@ namespace EasyElasticSearch
         public BulkAliasResponse RemoveAlias<T>(string alias) where T : class
         {
             return RemoveAlias(string.Empty.GetIndex<T>(), alias);
-        }
-
-        public ISearchRequest<T> OrderBy<T>(Expression<Func<T, object>> expression, OrderByType type = OrderByType.Asc)
-            where T : class
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
