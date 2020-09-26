@@ -5,8 +5,8 @@
 Elasticsearch 是一个分布式、高扩展、高实时的搜索与数据分析引擎。它能很方便的使大量数据具有搜索、分析和探索的能力,简称ES
 
 #### EasyElasticSearch是支持ES的增删改查的一个基础类库
-##### 支持表达式函数查询
-##### 别名操作
+##### 支持表达式函数查询,别名操作
+##### 其中表达式解析参考了SqlSuger,特此感谢 https://github.com/sunkaixuan/SqlSugar
 
 ## 查询
 ```csharp
