@@ -17,7 +17,8 @@ namespace EasyElasticSearch
                     Settings = new IndexSettings
                     {
                         NumberOfReplicas = numberOfReplicas,
-                        NumberOfShards = numberOfShards
+                        NumberOfShards = numberOfShards,
+                        
                         // index.blocks.read_only：设为true,则索引以及索引的元数据只可读
                         // index.blocks.read_only_allow_delete：设为true，只读时允许删除。
                         // index.blocks.read：设为true，则不可读。
@@ -25,7 +26,6 @@ namespace EasyElasticSearch
                         // index.blocks.metadata：设为true，则索引元数据不可读写
                     }
                 };
-
                 var response = await elasticClient.Indices.CreateAsync(indexName, p => p.InitializeUsing(indexState).Map<T>(x => x.AutoMap()));
                 if (!response.IsValid)
                     throw new Exception($"创建索引失败:{response.OriginalException.Message}");

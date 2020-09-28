@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace EasyElasticSearch
@@ -10,7 +11,7 @@ namespace EasyElasticSearch
             return !string.IsNullOrWhiteSpace(index) ? index : typeof(T).Name.ToLower();
         }
 
-        public static string ToFirstLower(this string str)
+        public static string ToFirstLower(this string str) 
         {
             return str.Substring(0, 1).ToLower() + str.Substring(1);
         }

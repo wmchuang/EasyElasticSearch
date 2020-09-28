@@ -140,6 +140,7 @@ namespace EasyElasticSearch
 
         public BulkAliasResponse RemoveAlias<T>(string alias) where T : class
         {
+          //  await _elasticClient.Sql.QueryAsync(x => "");
             return RemoveAlias(string.Empty.GetIndex<T>(), alias);
         }
 
