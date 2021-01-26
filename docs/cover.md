@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-![logo](/icon.svg)
+![logo](./icon.svg)
 
 # EasyElasticSearch <small>2.1</small>
 
