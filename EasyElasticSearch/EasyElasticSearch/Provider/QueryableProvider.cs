@@ -52,6 +52,7 @@ namespace EasyElasticSearch
 
         public virtual List<T> ToPageList(int pageIndex, int pageSize, ref long totalNumber)
         {
+            if (totalNumber <= 0) throw new ArgumentOutOfRangeException(nameof(totalNumber));
             var list = ToPageList(pageIndex, pageSize);
             totalNumber = _totalNumber;
             return list;

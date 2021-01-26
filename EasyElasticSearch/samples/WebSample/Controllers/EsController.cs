@@ -9,6 +9,26 @@ namespace WebSample.Controllers
 {
     public class EsController : BaseController
     {
+        #region Ctor
+
+        private readonly IIndexProvider _indexProvider;
+        private readonly IDeleteProvider _deleteProvider;
+        private readonly IUpdateProvider _updateProvider;
+        private readonly IAliasProvider _aliasProvider;
+
+        public EsController(IIndexProvider indexProvider,
+            IDeleteProvider deleteProvider,
+            IUpdateProvider updateProvider,
+            IAliasProvider aliasProvider)
+        {
+            _indexProvider = indexProvider;
+            _deleteProvider = deleteProvider;
+            _updateProvider = updateProvider;
+            _aliasProvider = aliasProvider;
+        }
+
+        #endregion
+
         #region 删
 
         [HttpGet]
@@ -36,25 +56,6 @@ namespace WebSample.Controllers
 
         #endregion
 
-        #region Ctor
-
-        private readonly IIndexProvider _indexProvider;
-        private readonly IDeleteProvider _deleteProvider;
-        private readonly IUpdateProvider _updateProvider;
-        private readonly IAliasProvider _aliasProvider;
-
-        public EsController(IIndexProvider indexProvider,
-            IDeleteProvider deleteProvider,
-            IUpdateProvider updateProvider,
-            IAliasProvider aliasProvider)
-        {
-            _indexProvider = indexProvider;
-            _deleteProvider = deleteProvider;
-            _updateProvider = updateProvider;
-            _aliasProvider = aliasProvider;
-        }
-
-        #endregion
 
         #region 查
 

@@ -19,7 +19,7 @@ namespace WebSample.Controllers
         public IActionResult Test()
         {
             var data = _clientProvider.Client.Search<User>(x => x.Index("User")
-                .Query(q => q.Term("userName", "53")));
+                .Query(q => q.Term("userName", "54")));
             return Ok(data.Documents);
         }
 
