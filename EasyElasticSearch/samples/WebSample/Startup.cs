@@ -1,9 +1,14 @@
 using EasyElasticSearch;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace WebSample
 {
@@ -20,6 +25,16 @@ namespace WebSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // 注册Swagger服务
+            services.AddSwaggerGen(c => { 
+                c.SwaggerDoc("v1", new OpenApiInfo() {Title = "EasyEs Doc", Version = "v1"});
+                // 使用反射获取xml文件。并构造出文件的路径
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                // 启用xml注释. 该方法第二个参数启用控制器的注释，默认为false.
+                c.IncludeXmlComments(xmlPath, true);
+            });
 
             services.AddEsService(options =>
             {
@@ -39,12 +54,12 @@ namespace WebSample
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // 启用Swagger中间件
+            app.UseSwagger();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            // 配置SwaggerUI
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyEs Doc"); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

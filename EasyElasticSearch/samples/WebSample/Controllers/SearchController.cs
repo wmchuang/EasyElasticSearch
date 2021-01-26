@@ -16,25 +16,21 @@ namespace WebSample.Controllers
             _clientProvider = clientProvider;
         }
 
-        public IActionResult Test()
-        {
-            var data = _clientProvider.Client.Search<User>(x => x.Index("User")
-                .Query(q => q.Term("userName", "54")));
-            return Ok(data.Documents);
-        }
-
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult SearchAll()
         {
             var data = _searchProvider.Queryable<User>().OrderBy(x => x.Money).ToList();
             return Ok(data);
         }
 
+        [HttpGet]
         public IActionResult SearchPage()
         {
             var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToPageList(1, 2);
             return Ok(data);
         }
 
+        [HttpGet]
         public IActionResult SearchPageNumber()
         {
             long total = 0;
@@ -42,6 +38,7 @@ namespace WebSample.Controllers
             return Ok(data);
         }
 
+        [HttpGet]
         public async Task<IActionResult> SearchAsync()
         {
             var data = await _searchProvider.Queryable<User>().Where(x => x.UserName.Contains("5")).ToListAsync();

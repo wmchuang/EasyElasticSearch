@@ -4,7 +4,6 @@ namespace WebSample.Domain
 {
     public class User
     {
-        public int I { get; private set; }
         public string UserId { get; set; }
 
         public string UserName { get; set; }

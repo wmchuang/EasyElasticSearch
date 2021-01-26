@@ -6,21 +6,29 @@ using WebSample.Domain;
 
 namespace WebSample.Controllers
 {
-    public class IndexController : BaseController
+    /// <summary>
+    /// 新增操作
+    /// </summary>
+    public class InsertController : BaseController
     {
         private readonly IIndexProvider _indexProvider;
 
-        public IndexController(IIndexProvider indexProvider)
+        public InsertController(IIndexProvider indexProvider)
         {
             _indexProvider = indexProvider;
         }
 
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IActionResult InsertAsync()
         {
-            var user = new Manager
+            var user = new User
             {
-                UserId = "123123123",
-                UserName = DateTime.Now.Minute.ToString(),
+                UserId = "A112312312311",
+                UserName = $"U{DateTime.Now.Second.ToString()}",
                 CreateTime = DateTime.Now,
                 Money = 110m
             };
@@ -28,21 +36,26 @@ namespace WebSample.Controllers
             return Ok("Yes");
         }
 
+        /// <summary>
+        /// 批量新增
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IActionResult InsertRangeAsync()
         {
             var users = new List<User>
             {
                 new User
                 {
-                    UserId = "123123123",
-                    UserName = DateTime.Now.Minute.ToString(),
+                    UserId = "B123123123",
+                    UserName = $"U{DateTime.Now.Second.ToString()}",
                     CreateTime = DateTime.Now,
                     Money = 80m
                 },
                 new User
                 {
-                    UserId = "456456",
-                    UserName = DateTime.Now.Minute.ToString(),
+                    UserId = "B4564123156",
+                    UserName = $"U{DateTime.Now.Second.ToString()}",
                     CreateTime = DateTime.Now,
                     Money = 90m
                 }
