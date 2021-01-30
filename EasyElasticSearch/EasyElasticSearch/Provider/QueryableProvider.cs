@@ -38,6 +38,12 @@ namespace EasyElasticSearch
             return _ToList<T>();
         }
 
+        public async Task<T> FirstAsync()
+        {
+            var result = await _ToListAsync<T>();
+            return result.FirstOrDefault();
+        }
+
         public virtual async Task<List<T>> ToListAsync()
         {
             return await _ToListAsync<T>();

@@ -343,3 +343,4 @@ healthchecksdb
 /src/Services/WeChat/MP/UGuoba.Services.WeChat.MP.Entity/UGuoba.Services.WeChat.MP.Entity.xml
 /src/Services/Products/ExamBank/UGuoba.Services.Products.ExamBank.Api/UGuoba.Services.Products.ExamBank.Api.xml
 /src/Services/Products/ExamBank/UGuoba.Services.Products.ExamBank.Model/UGuoba.Services.Products.ExamBank.Model.xml
+/EasyElasticSearch/samples/WebSample/WebSample.xml

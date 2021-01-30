@@ -22,7 +22,7 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult AddAlias()
         {
-            _aliasProvider.AddAliasAsync<User>("bieming");
+            _aliasProvider.AddAliasAsync<UserWallet>("alias");
             return Ok("Success");
         }
 
@@ -33,7 +33,7 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult RemoveAlias()
         {
-            _aliasProvider.RemoveAlias<User>("bieming");
+            _aliasProvider.RemoveAlias<UserWallet>("alias");
             return Ok("Success");
         }
 

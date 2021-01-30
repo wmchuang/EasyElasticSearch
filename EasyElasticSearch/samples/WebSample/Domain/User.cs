@@ -1,8 +1,9 @@
 ﻿using System;
+using EasyElasticSearch.Entity;
 
 namespace WebSample.Domain
 {
-    public class User
+    public class UserWallet : EsBaseEntity
     {
         public string UserId { get; set; }
 

@@ -19,14 +19,14 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult SearchAll()
         {
-            var data = _searchProvider.Queryable<User>().OrderBy(x => x.Money).ToList();
+            var data = _searchProvider.Queryable<UserWallet>().OrderBy(x => x.Money).ToList();
             return Ok(data);
         }
 
         [HttpGet]
         public IActionResult SearchPage()
         {
-            var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToPageList(1, 2);
+            var data = _searchProvider.Queryable<UserWallet>().Where(x => x.UserName == "52").ToPageList(1, 2);
             return Ok(data);
         }
 
@@ -34,15 +34,28 @@ namespace WebSample.Controllers
         public IActionResult SearchPageNumber()
         {
             long total = 0;
-            var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToPageList(1, 2, ref total);
+            var data = _searchProvider.Queryable<UserWallet>().Where(x => x.UserName == "52").ToPageList(1, 2, ref total);
             return Ok(data);
         }
 
         [HttpGet]
         public async Task<IActionResult> SearchAsync()
         {
-            var data = await _searchProvider.Queryable<User>().Where(x => x.UserName.Contains("5")).ToListAsync();
+            var data = await _searchProvider.Queryable<UserWallet>().Where(x => x.UserName.Contains("5")).ToListAsync();
             return Ok(data);
         }
+
+
+        #region NEST
+
+        
+        [HttpGet]
+        public async Task<IActionResult> NestSearchAsync()
+        {
+            var data = await _clientProvider.Client.SearchAsync<UserWallet>(x => x.Index("User").Query(q => q.MatchAll()));
+            return Ok(data.Documents);
+        }
+
+        #endregion
     }
 }

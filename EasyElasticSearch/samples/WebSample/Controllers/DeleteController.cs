@@ -20,7 +20,7 @@ namespace WebSample.Controllers
         [HttpGet]
         public IActionResult Delete()
         {
-            _deleteProvider.DeleteByQuery<User>(x => x.UserName == "U32");
+            _deleteProvider.DeleteByQuery<UserWallet>(x => x.UserName == "U32");
             return Ok("Success");
         }
     }

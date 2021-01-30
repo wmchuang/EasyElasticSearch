@@ -10,6 +10,8 @@ namespace EasyElasticSearch
         IEsQueryable<T> Where(Expression<Func<T, bool>> expression);
 
         List<T> ToList();
+        
+        Task<T> FirstAsync();
 
         Task<List<T>> ToListAsync();
         List<T> ToPageList(int pageIndex, int pageSize);

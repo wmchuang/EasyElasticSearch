@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using Nest;
 
@@ -33,7 +34,7 @@ namespace EasyElasticSearch
 
         #region Update
 
-        public IUpdateResponse<T> Update<T>(string key, T entity, string index = "") where T : class
+        public async Task<IUpdateResponse<T>> UpdateAsync<T>(string key, T entity, string index = "") where T : class
         {
             var indexName = index.GetIndex<T>();
             var request = new UpdateRequest<T, object>(indexName, key)
@@ -41,7 +42,7 @@ namespace EasyElasticSearch
                 Doc = entity
             };
 
-            var response = _elasticClient.Update(request);
+            var response = await _elasticClient.UpdateAsync(request);
             if (!response.IsValid)
                 throw new Exception("更新失败:" + response.OriginalException.Message);
             return response;
@@ -97,11 +98,12 @@ namespace EasyElasticSearch
                 throw new Exception("批量新增数据失败:" + response.OriginalException.Message);
         }
 
-        public async Task RemoveIndex(string index)
+        public async Task RemoveIndexAsync<T>() where T : class
         {
-            var exists = await IndexExistsAsync(index);
+            var indexName = string.Empty.GetIndex<T>();
+            var exists = await IndexExistsAsync(indexName);
             if (!exists) return;
-            var response = await _elasticClient.Indices.DeleteAsync(index);
+            var response = await _elasticClient.Indices.DeleteAsync(indexName);
 
             if (!response.IsValid)
                 throw new Exception("删除index失败:" + response.OriginalException.Message);
@@ -133,14 +135,13 @@ namespace EasyElasticSearch
                 .Index(index)
                 .Alias(alias)));
 
-            if (!response.IsValid)
-                throw new Exception("删除Alias失败:" + response.OriginalException.Message);
+            if (!response.IsValid && response.ApiCall.HttpStatusCode != (int) HttpStatusCode.NotFound)
+                throw new Exception("删除Alias失败:" + response.OriginalException?.Message);
             return response;
         }
 
         public BulkAliasResponse RemoveAlias<T>(string alias) where T : class
         {
-          //  await _elasticClient.Sql.QueryAsync(x => "");
             return RemoveAlias(string.Empty.GetIndex<T>(), alias);
         }
 
