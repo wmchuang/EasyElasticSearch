@@ -1,7 +1,8 @@
  # 综述
 
  
- [在线文档地址](https://wmchuang.github.io/EasyElasticSearch/#/)
+ [github文档地址](https://wmchuang.github.io/EasyElasticSearch/#/)  
+ [gitee文档地址](http://crole.gitee.io/easyelasticsearch/#/)
 
 **Elasticsearch** 是一个分布式、高扩展、高实时的搜索与数据分析引擎。它能很方便的使大量数据具有搜索、分析和探索的能力,简称**ES**
 

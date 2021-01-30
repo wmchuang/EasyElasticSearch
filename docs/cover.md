@@ -9,4 +9,4 @@
 - 支持表达式函数查询
 
 [GitHub](https://github.com/wmchuang/EasyElasticSearch/)
-[Get Started](#docsify)
+[Get Started](#EasyElasticSearch)
