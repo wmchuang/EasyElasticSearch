@@ -19,12 +19,14 @@ namespace EasyElasticSearch
 
         #region Delete
 
-        public DeleteByQueryResponse DeleteByQuery<T>(Expression<Func<T, bool>> expression, string index = "")
+        public async Task<DeleteByQueryResponse> DeleteByQuery<T>(Expression<Func<T, bool>> expression, string index = "")
             where T : class, new()
         {
             var indexName = index.GetIndex<T>();
             var request = new DeleteByQueryRequest<T>(indexName);
-            var response = _elasticClient.DeleteByQuery(request);
+            var build = new QueryBuilder<T>();
+            request.Query = build.GetQueryContainer(expression);
+            var response = await _elasticClient.DeleteByQueryAsync(request);
             if (!response.IsValid)
                 throw new Exception("删除失败:" + response.OriginalException.Message);
             return response;

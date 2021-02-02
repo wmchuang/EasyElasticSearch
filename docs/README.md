@@ -8,8 +8,8 @@
 
 ----------
 
-欢迎使用 **EasyElasticSearch**，它是一个操作**ElasticSearch**的基础类库。
-支持表达式函数查询,别名操作
+欢迎使用 **EasyElasticSearch**，它是一个操作**ElasticSearch**的基础类库。是对[NEST](https://github.com/elastic/elasticsearch-net)的进一步封装,所以在可以直接使用**NEST**的操作方法的同时，可以使用我封装的一些方法。主要提供了一些表达式函数查询的方法，使用起来特别简单方便。
+
 其中表达式解析参考了[SqlSuger](https://github.com/sunkaixuan),特此感谢 !
 
 * * *
@@ -111,62 +111,73 @@ volumes:
 
 ## 查询
 ```csharp
- [HttpGet]
- public IActionResult Search()
- {
-     var data = _searchProvider.Queryable<User>().Where(x => x.UserName == "52").ToList();
-     return Ok(data);
- }
+[HttpGet]
+public async Task<IActionResult> SearchAsync()
+{
+    var data = await _searchProvider.Queryable<UserWallet>().Where(x => x.UserName.Contains("5")).ToListAsync();
+    return Success(data);
+}
 ```
 
 
 ## 增加
 ```csharp
- [HttpGet]
- public ActionResult Add()
- {
-     var record = new RegistryRecord
-     {
-         UserId = "1268436794379079680",
-         UserName = "es",
-         RegistryTime = DateTime.Now
-     };
-
-     _indexProvider.Index<RegistryRecord>(record);
-     return Ok("Success");
- }
-
- /// <summary>
- /// 批量新增
- /// </summary>
- /// <returns></returns>
- [HttpGet]
- public ActionResult BulkAdd()
- {     var records = new List<RegistryRecord>
-     {
-         new RegistryRecord{
-               UserId = "1268436794379079680",
-               UserName = "Bulkes1",
-              RegistryTime = DateTime.Now
-         },
-         new RegistryRecord{
-               UserId = "1268436794379079680",
-               UserName = "Bulkes2",
-              RegistryTime = DateTime.Now
-         },
-     };
-
-     _indexProvider.BulkIndex<RegistryRecord>(records);
-     return Ok("Success");
- }
+/// <summary>
+/// 新增数据
+/// </summary>
+/// <returns></returns>
+[HttpGet]
+public async Task<IActionResult> InsertAsync()
+{
+    var user = new UserWallet
+    {
+        UserId = "A112312312311",
+        UserName = $"U{DateTime.Now.Second.ToString()}",
+        CreateTime = DateTime.Now,
+        Money = 110m
+    };
+    await _indexProvider.InsertAsync(user);
+    return Success();
+}
+/// <summary>
+/// 批量新增
+/// </summary>
+/// <returns></returns>
+[HttpGet]
+public async Task<IActionResult> InsertRangeAsync()
+{
+    var users = new List<UserWallet>
+    {
+        new UserWallet
+        {
+            UserId = "B123123123",
+            UserName = $"U{DateTime.Now.Second.ToString()}",
+            CreateTime = DateTime.Now,
+            Money = 80m
+        },
+        new UserWallet
+        {
+            UserId = "B4564123156",
+            UserName = $"U{DateTime.Now.Second.ToString()}",
+            CreateTime = DateTime.Now,
+            Money = 90m
+        }
+    };
+    await _indexProvider.InsertRangeAsync(users);
+    return Success();
+}
 ```
 ## 删除
 ```csharp
+/// <summary>
+/// 删除操作
+/// </summary>
+/// <returns></returns>
 [HttpGet]
-public IActionResult Delete()
+public async Task<IActionResult> Delete()
 {
-    _deleteProvider.DeleteByQuery<RegistryRecord>(x => x.UserName == "Bulkes1");
-    return Ok("Success");
+    await _deleteProvider.DeleteByQuery<UserWallet>(x => x.UserName == "U44" || x.UserName == "U26");
+    return Success();
 }
 ```
 ## .....

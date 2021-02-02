@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using EasyElasticSearch;
 using Microsoft.AspNetCore.Mvc;
 using WebSample.Domain;
@@ -16,12 +17,15 @@ namespace WebSample.Controllers
             _deleteProvider = deleteProvider;
         }
 
-
+        /// <summary>
+        /// 删除操作
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete()
         {
-            _deleteProvider.DeleteByQuery<UserWallet>(x => x.UserName == "U32");
-            return Ok("Success");
+            await _deleteProvider.DeleteByQuery<UserWallet>(x => x.UserName == "U44" || x.UserName == "U26");
+            return Success();
         }
     }
 }
