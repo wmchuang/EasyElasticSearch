@@ -8,7 +8,7 @@ using WebSample.Domain;
 namespace WebSample.Controllers
 {
     /// <summary>
-    /// 新增操作
+    /// 索引操作
     /// </summary>
     public class IndexController : BaseController
     {
@@ -24,10 +24,10 @@ namespace WebSample.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> RemoveIndexAsync()
+        public async Task<IActionResult> DeleteIndexAsync()
         {
-            await _indexProvider.RemoveIndexAsync<UserWallet>();
-            return Ok("yes");
+            await _indexProvider.DeleteIndexAsync<UserWallet>();
+            return Success();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace WebSample.Controllers
                 Money = 110m
             };
             await _indexProvider.InsertAsync(user);
-            return Ok("Yes");
+            return Success();
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace WebSample.Controllers
                 }
             };
             await _indexProvider.InsertRangeAsync(users);
-            return Ok("Yes");
+            return Success();
         }
        
         /// <summary>
@@ -98,7 +98,7 @@ namespace WebSample.Controllers
             }
          
             await _indexProvider.InsertRangeAsync(users);
-            return Ok("Yes");
+            return Success();
         }
     }
 }

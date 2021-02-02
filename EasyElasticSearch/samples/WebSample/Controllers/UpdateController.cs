@@ -33,7 +33,7 @@ namespace WebSample.Controllers
                 UserName = "Update"
             };
             await _updateProvider.UpdateAsync(id, record);
-            return Ok("Success");
+            return Success();
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace WebSample.Controllers
             if (userWallet == null) return Ok("Success");
             userWallet.UserName = "Update";
             await _updateProvider.UpdateAsync(id, userWallet);
-            return Ok("Success");
+            return Success();
         }
     }
 }

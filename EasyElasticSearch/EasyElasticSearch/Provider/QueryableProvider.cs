@@ -18,18 +18,22 @@ namespace EasyElasticSearch
 
         private long _totalNumber;
 
-        public QueryableProvider(MappingIndex mappingIndex, IElasticClient client)
+        private QueryBuilder<T> _queryBuilder;
+
+        public QueryableProvider(IElasticClient client)
         {
-            _mappingIndex = mappingIndex;
-            _request = new SearchRequest(_mappingIndex.IndexName) {Size = 10000};
+            _queryBuilder = new QueryBuilder<T>();
+            _mappingIndex = _queryBuilder.GetMappingIndex();
+            _request = new SearchRequest(_mappingIndex.IndexName)
+            {
+                Size = 10000
+            };
             _client = client;
         }
 
-        public QueryContainer QueryContainer { get; set; }
-
         public IEsQueryable<T> Where(Expression<Func<T, bool>> expression)
         {
-            _Where(expression);
+            _request.Query = _queryBuilder.GetQueryContainer(expression);
             return this;
         }
 
@@ -56,9 +60,8 @@ namespace EasyElasticSearch
             return _ToList<T>();
         }
 
-        public virtual List<T> ToPageList(int pageIndex, int pageSize, ref long totalNumber)
+        public virtual List<T> ToPageList(int pageIndex, int pageSize, out long totalNumber)
         {
-            if (totalNumber <= 0) throw new ArgumentOutOfRangeException(nameof(totalNumber));
             var list = ToPageList(pageIndex, pageSize);
             totalNumber = _totalNumber;
             return list;
@@ -76,18 +79,15 @@ namespace EasyElasticSearch
             return this;
         }
 
-        private static void _GroupBy(Expression expression)
+        private void _GroupBy(Expression expression)
         {
-            // var propertyName = ReflectionExtensionHelper.GetProperty(expression as LambdaExpression).Name;
-            // propertyName = _mappingIndex.Columns.FirstOrDefault(x => x.PropertyName == propertyName)?.SearchName ?? propertyName;
-            // _request.Aggregations = new AggregationDictionary
-            // {
-            //     TermQuery = new TermsAggregation(propertyName)
-            //     {
-            //         Field = propertyName,
-            //         Size = 1000
-            //     }
-            // };
+            var propertyName = ReflectionExtensionHelper.GetProperty(expression as LambdaExpression).Name;
+            propertyName = _mappingIndex.Columns.FirstOrDefault(x => x.PropertyName == propertyName)?.SearchName ?? propertyName;
+            _request.Aggregations = new TermsAggregation(propertyName)
+            {
+                Field = propertyName,
+                Size = 1000
+            };
         }
 
         private void _OrderBy(Expression expression, OrderByType type = OrderByType.Asc)
@@ -106,8 +106,6 @@ namespace EasyElasticSearch
 
         private List<TResult> _ToList<TResult>() where TResult : class
         {
-            _request.Query = QueryContainer;
-
             var response = _client.Search<TResult>(_request);
 
             if (!response.IsValid)
@@ -119,19 +117,12 @@ namespace EasyElasticSearch
 
         private async Task<List<TResult>> _ToListAsync<TResult>() where TResult : class
         {
-            _request.Query = QueryContainer;
-
             var response = await _client.SearchAsync<TResult>(_request);
 
             if (!response.IsValid)
                 throw new Exception($"查询失败:{response.OriginalException.Message}");
             _totalNumber = response.Total;
             return response.Documents.ToList();
-        }
-
-        private void _Where(Expression expression)
-        {
-            QueryContainer = ExpressionsGetQuery.GetQuery(expression, _mappingIndex);
         }
     }
 }

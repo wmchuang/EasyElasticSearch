@@ -20,29 +20,39 @@ namespace WebSample.Controllers
         public IActionResult SearchAll()
         {
             var data = _searchProvider.Queryable<UserWallet>().OrderBy(x => x.Money).ToList();
-            return Ok(data);
+            return Success(data);
         }
 
         [HttpGet]
         public IActionResult SearchPage()
         {
-            var data = _searchProvider.Queryable<UserWallet>().Where(x => x.UserName == "52").ToPageList(1, 2);
-            return Ok(data);
+            var data = _searchProvider.Queryable<UserWallet>().Where(x => x.UserName == "Update").ToPageList(1, 2);
+            return Success(data);
         }
 
         [HttpGet]
         public IActionResult SearchPageNumber()
         {
-            long total = 0;
-            var data = _searchProvider.Queryable<UserWallet>().Where(x => x.UserName == "52").ToPageList(1, 2, ref total);
-            return Ok(data);
+            var data = _searchProvider.Queryable<UserWallet>().Where(x => x.UserName == "Update").ToPageList(1, 2, out var total);
+            return Success(new
+            {
+                total,
+                data
+            });
         }
 
         [HttpGet]
         public async Task<IActionResult> SearchAsync()
         {
             var data = await _searchProvider.Queryable<UserWallet>().Where(x => x.UserName.Contains("5")).ToListAsync();
-            return Ok(data);
+            return Success(data);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GroupAsync()
+        {
+            var data = await _searchProvider.Queryable<UserWallet>().GroupBy(x => x.UserName).ToListAsync();
+            return Success(data);
         }
 
 
@@ -53,7 +63,7 @@ namespace WebSample.Controllers
         public async Task<IActionResult> NestSearchAsync()
         {
             var data = await _clientProvider.Client.SearchAsync<UserWallet>(x => x.Index("User").Query(q => q.MatchAll()));
-            return Ok(data.Documents);
+            return Success(data.Documents);
         }
 
         #endregion

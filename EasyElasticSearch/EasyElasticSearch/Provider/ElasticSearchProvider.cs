@@ -66,7 +66,6 @@ namespace EasyElasticSearch
             if (!exists)
             {
                 await ((ElasticClient) _elasticClient).CreateIndexAsync<T>(indexName);
-                await AddAliasAsync(indexName, typeof(T).Name);
             }
 
             var response = await _elasticClient.IndexAsync(entity,
@@ -98,7 +97,7 @@ namespace EasyElasticSearch
                 throw new Exception("批量新增数据失败:" + response.OriginalException.Message);
         }
 
-        public async Task RemoveIndexAsync<T>() where T : class
+        public async Task DeleteIndexAsync<T>() where T : class
         {
             var indexName = string.Empty.GetIndex<T>();
             var exists = await IndexExistsAsync(indexName);

@@ -6,14 +6,7 @@ namespace EasyElasticSearch
     public interface IIndexProvider
     {
         /// <summary>
-        /// 判断索引是否存在
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        Task<bool> IndexExistsAsync(string index);
-
-        /// <summary>
-        ///  新增数据
+        /// 新增数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
@@ -29,10 +22,17 @@ namespace EasyElasticSearch
         Task InsertRangeAsync<T>(IEnumerable<T> entity, string index = "") where T : class;
 
         /// <summary>
+        /// 判断索引是否存在
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        Task<bool> IndexExistsAsync(string index);
+
+        /// <summary>
         /// 删除索引
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Task RemoveIndexAsync<T>() where T : class;
+        Task DeleteIndexAsync<T>() where T : class;
     }
 }
